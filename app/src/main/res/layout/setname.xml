@@ -9,7 +9,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_gravity="center"
-        android:layout_marginRight="80dp"
+        android:layout_marginRight="8dp"
         android:id="@+id/setname"
         android:hint="设置图灵名字"/>
 
