@@ -69,13 +69,50 @@ public class ChatListMgr {
                     }
                     else if(code == HttpUtil.NEWS){ //新闻
                         ChatEntity chatEntity = new ChatEntity();
-                        chatEntity.setMsg(jsonObject.getString("text")+"");
+                        JSONArray List = jsonObject.getJSONArray("list");
+                        JSONObject info = List.getJSONObject(0);
+
+                        String detailurl  = info.getString("detailurl");
+                        String source = info.getString("source");
+                        String article = info.getString("artice");
+//                        "detailurl": "http://news.163.com/15/0905/00/B2N7FFP800014AED.html",
+//                                "source": "网易新闻",
+//                                "article": "中央军委原副主席张震逝世 系开国中将",
+//                                "icon": ""
+
+
+                        chatEntity.setMsg("标题"+article+",来源"+source+"，网络连接"+detailurl);
                         chatEntity.setDate(new Date());
                         chatEntity.setType(ChatEntity.Type.INCOMING);
                         list.add(chatEntity);
                         handler.sendEmptyMessage(1);
-                    }else
-                        {
+                    }else if(code == HttpUtil.NOTES) {// 菜谱视频小说
+                        ChatEntity chatEntity = new ChatEntity();
+                        JSONArray List = jsonObject.getJSONArray("list");
+                        JSONObject info = List.getJSONObject(0);
+
+                        String detailurl = info.getString("detailurl");
+                        String iconurl = info.getString("icon");
+                        String infocontent = info.getString("info");
+                        String name = info.getString("name");
+//                        "detailurl": "http:\/\/m.xiachufang.com\/recipe\/94881\/",
+//                                "icon": "http:\/\/i5.xiachufang.com\/image\/280\/9cfd8c989ecb11e3b4a6e0db5512b209.jpg",
+//                                "info": "五花肉、冰糖、小茴香 | 葱、姜、蒜、花椒、大料、干辣椒、老抽生抽调好的汁",
+//                                "name": "红烧肉"
+                        //chatEntity.setMsg(jsonObject.getString("text")+"");
+                        chatEntity.setMsg(name+"\n"+"图片"+iconurl+"配料"+infocontent+"\n"+"详细做法"+detailurl);
+                        chatEntity.setDate(new Date());
+                        chatEntity.setType(ChatEntity.Type.INCOMING);
+                        list.add(chatEntity);
+                        handler.sendEmptyMessage(1);
+                    }else if(code == HttpUtil.WEB) {//网页链接
+                        ChatEntity chatEntity = new ChatEntity();
+                        chatEntity.setMsg(jsonObject.getString("url")+"");
+                        chatEntity.setDate(new Date());
+                        chatEntity.setType(ChatEntity.Type.INCOMING);
+                        list.add(chatEntity);
+                        handler.sendEmptyMessage(1);
+                    }else {
                             Toast.makeText(context,"输入信息不合法",Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
